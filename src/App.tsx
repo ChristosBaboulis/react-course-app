@@ -1,34 +1,116 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import ListGroup from "./components/ListGroup";
+import Alert from "./components/Alert";
+import Button from "./components/Button";
+import { useState } from "react";
+import { BsFillCalendarFill } from "react-icons/bs";
+import { produce } from "immer";
+import NavBar from "./components/NavBar";
+import Cart from "./components/Cart";
 
 function App() {
-  const [count, setCount] = useState(0)
+  let items = ["New York", "San Fransisco", "Tokyo", "London"];
+
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [listVisible, setListVisible] = useState(false);
+  const [bugs, setBugs] = useState([
+    { id: 1, title: "Bug 1", fixed: false },
+    { id: 2, title: "Bug 2", fixed: false },
+  ]);
+  const [cartItems, setCartItems] = useState(["Product 1", "Product 2"]);
+  const [game, setGame] = useState({
+    id: 1,
+    player: {
+      name: "John",
+    },
+  });
+  const [pizza, setPizza] = useState({
+    name: "Spicy Pepperoni",
+    toppings: ["Mushroom"],
+  });
+
+  const renderAlert = () => {
+    return (
+      alertVisible && (
+        <Alert onClose={() => setAlertVisible(false)}>
+          <strong>Holy guacamole!</strong> You should check this alert!
+        </Alert>
+      )
+    );
+  };
+  const renderList = () => {
+    return (
+      listVisible && (
+        <ListGroup
+          items={items}
+          heading="Cities"
+          onSelectItem={handleSelectItem}
+        />
+      )
+    );
+  };
+
+  const handleSelectItem = (item: string) => {
+    console.log(item);
+  };
+
+  const handleClick = () => {
+    // vanilla way
+    //setBugs(bugs.map((bug) => (bug.id === 1 ? { ...bug, fixed: true } : bug)));
+
+    // immer way
+    setBugs(
+      produce((draft) => {
+        const bug = draft.find((bug) => bug.id === 1);
+        if (bug) bug.fixed = true;
+      })
+    );
+  };
+
+  const handleClickForGame = () => {
+    setGame({
+      ...game,
+      player: { ...game.player, name: "Nick" },
+    });
+  };
 
   return (
-    <div className="App">
+    <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <Button onClick={() => setListVisible(!listVisible)} color="danger">
+          Hide/Show List
+        </Button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+      <br></br>
+      {renderList()}
+      <br></br>
+      <div>
+        <Button onClick={() => setAlertVisible(!alertVisible)} color="danger">
+          Hide/Show Alert
+        </Button>
+      </div>
+      <br></br>
+      {renderAlert()}
+      <br></br>
+      <BsFillCalendarFill color="red" size="40" />
+      <br></br>
+      <br></br>
+      <Button onClick={handleClick}>Click Me </Button>
+      <br></br>
+      {bugs.map((bug) => (
+        <p key={bug.id}>
+          {bug.title} {bug.fixed ? "Fixed" : "New"}
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+      ))}
+      <br></br>
+      <br></br>
+      <NavBar cartItemsCount={cartItems.length} />
+      <Cart cartItems={cartItems} onClear={() => setCartItems([])} />
+      <br></br>
+      <br></br>
+      <Button onClick={handleClickForGame}>Change Name </Button>
+      <p key={game.id}>{game.player.name}</p>
+    </>
+  );
 }
 
-export default App
+export default App;
