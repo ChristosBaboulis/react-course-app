@@ -21,3 +21,4 @@ const Cart = ({ cartItems, onClear }: CartProps) => {
 };
 
 export default Cart;
+git;
