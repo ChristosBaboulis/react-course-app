@@ -10,24 +10,31 @@ import Cart from "./components/Cart";
 function App() {
   let items = ["New York", "San Fransisco", "Tokyo", "London"];
 
+  // ------------------------------------------------------ STATE ------------------------------------------------------
   const [alertVisible, setAlertVisible] = useState(false);
+
   const [listVisible, setListVisible] = useState(false);
+
   const [bugs, setBugs] = useState([
     { id: 1, title: "Bug 1", fixed: false },
     { id: 2, title: "Bug 2", fixed: false },
   ]);
+
   const [cartItems, setCartItems] = useState(["Product 1", "Product 2"]);
+
   const [game, setGame] = useState({
     id: 1,
     player: {
       name: "John",
     },
   });
+
   const [pizza, setPizza] = useState({
     name: "Spicy Pepperoni",
     toppings: ["Mushroom"],
   });
 
+  // ------------------------------------------------------ RENDER FUNCTIONS ------------------------------------------------------
   const renderAlert = () => {
     return (
       alertVisible && (
@@ -49,6 +56,7 @@ function App() {
     );
   };
 
+  // ------------------------------------------------------ HANDLERS ------------------------------------------------------
   const handleSelectItem = (item: string) => {
     console.log(item);
   };
@@ -73,6 +81,17 @@ function App() {
     });
   };
 
+  const handleClickForPizza = () => {
+    // vanilla way
+    //setPizza({ ...pizza, toppings: [...pizza.toppings, "Olives"] });
+
+    setPizza(
+      produce((draft) => {
+        draft.toppings.push("Olives");
+      })
+    );
+  };
+  // ------------------------------------------------------ JSX ------------------------------------------------------
   return (
     <>
       <div>
@@ -80,35 +99,50 @@ function App() {
           Hide/Show List
         </Button>
       </div>
+
       <br></br>
       {renderList()}
+
       <br></br>
       <div>
         <Button onClick={() => setAlertVisible(!alertVisible)} color="danger">
           Hide/Show Alert
         </Button>
       </div>
+
       <br></br>
       {renderAlert()}
+
       <br></br>
       <BsFillCalendarFill color="red" size="40" />
+
       <br></br>
       <br></br>
       <Button onClick={handleClick}>Click Me </Button>
+
       <br></br>
       {bugs.map((bug) => (
         <p key={bug.id}>
           {bug.title} {bug.fixed ? "Fixed" : "New"}
         </p>
       ))}
+
       <br></br>
       <br></br>
       <NavBar cartItemsCount={cartItems.length} />
       <Cart cartItems={cartItems} onClear={() => setCartItems([])} />
+
       <br></br>
       <br></br>
       <Button onClick={handleClickForGame}>Change Name </Button>
       <p key={game.id}>{game.player.name}</p>
+
+      <br></br>
+      <br></br>
+      <Button onClick={handleClickForPizza}>Add Olives </Button>
+      <p>
+        {pizza.name} - Toppings: {pizza.toppings.join(", ")}
+      </p>
     </>
   );
 }
