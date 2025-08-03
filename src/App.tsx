@@ -6,6 +6,7 @@ import { BsFillCalendarFill } from "react-icons/bs";
 import { produce } from "immer";
 import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
+import ExpandableText from "./components/ExpandableText";
 
 function App() {
   let items = ["New York", "San Fransisco", "Tokyo", "London"];
@@ -143,6 +144,11 @@ function App() {
       <p>
         {pizza.name} - Toppings: {pizza.toppings.join(", ")}
       </p>
+
+      <br></br>
+      <br></br>
+      <ExpandableText maxChars={100} />
+      <div></div>
     </>
   );
 }
