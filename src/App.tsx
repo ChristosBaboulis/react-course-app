@@ -7,6 +7,7 @@ import { produce } from "immer";
 import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
+import Form from "./components/Form";
 
 function App() {
   let items = ["New York", "San Fransisco", "Tokyo", "London"];
@@ -151,6 +152,11 @@ function App() {
       <br></br>
       <ExpandableText maxChars={10}>{displayText}</ExpandableText>
       <div></div>
+      <br></br>
+      <br></br>
+      <div>
+        <Form />
+      </div>
     </>
   );
 }
