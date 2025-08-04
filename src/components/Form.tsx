@@ -4,10 +4,13 @@ const Form = () => {
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
 
+  const person = { name: "", age: 0 };
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (nameRef.current !== null) console.log(nameRef.current.value);
-    if (ageRef.current !== null) console.log(ageRef.current.value);
+    if (nameRef.current !== null) person.name = nameRef.current.value;
+    if (ageRef.current !== null) person.age = parseInt(ageRef.current.value);
+    console.log("Submitted:", person);
   };
 
   return (
