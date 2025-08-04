@@ -1,23 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import Button from "./Button";
 
 interface ExpandableTextProps {
   maxChars?: number;
+  children: string;
 }
 
-const ExpandableText = ({ maxChars }: ExpandableTextProps) => {
+const ExpandableText = ({ maxChars = 100, children }: ExpandableTextProps) => {
+  const [isExpanded, setExpanded] = useState(false);
+
+  if (children.length <= maxChars) return <p>{children}</p>;
+  const text = isExpanded ? children : children.substring(0, maxChars);
+
+  const handleClick = () => {
+    setExpanded(!isExpanded);
+  };
+
   return (
-    <>
-      <div>ExpandableText</div>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
-      </p>
-    </>
+    <p>
+      {text}...
+      <Button onClick={handleClick}>{isExpanded ? "Less" : "More"}</Button>
+    </p>
   );
 };
 
