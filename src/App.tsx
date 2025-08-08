@@ -167,10 +167,12 @@ function App() {
       </div>
       <br></br>
       <br></br>
-      <ExpenseList
-        expenses={expenses}
-        onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
-      />
+      {expenses.length !== 0 && (
+        <ExpenseList
+          expenses={expenses}
+          onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
+        />
+      )}
     </>
   );
 }
