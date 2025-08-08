@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
 import Form from "./components/Form";
+import ExpenseList from "./expense-tracker/components/ExpenseList";
 
 function App() {
   let items = ["New York", "San Fransisco", "Tokyo", "London"];
@@ -37,6 +38,13 @@ function App() {
     name: "Spicy Pepperoni",
     toppings: ["Mushroom"],
   });
+
+  const [expenses, setExpenses] = useState([
+    { id: 1, description: "aaa", amount: 10, category: "Utilities" },
+    { id: 2, description: "bbb", amount: 10, category: "Utilities" },
+    { id: 3, description: "ccc", amount: 10, category: "Utilities" },
+    { id: 4, description: "ddd", amount: 10, category: "Utilities" },
+  ]);
 
   // ------------------------------------------------------ RENDER FUNCTIONS ------------------------------------------------------
   const renderAlert = () => {
@@ -157,6 +165,12 @@ function App() {
       <div>
         <Form />
       </div>
+      <br></br>
+      <br></br>
+      <ExpenseList
+        expenses={expenses}
+        onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
+      />
     </>
   );
 }
