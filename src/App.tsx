@@ -9,6 +9,7 @@ import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
 import Form from "./components/Form";
 import ExpenseList from "./expense-tracker/components/ExpenseList";
+import ExpenseFilter from "./expense-tracker/ExpenseFilter";
 
 function App() {
   let items = ["New York", "San Fransisco", "Tokyo", "London"];
@@ -45,6 +46,8 @@ function App() {
     { id: 3, description: "ccc", amount: 10, category: "Utilities" },
     { id: 4, description: "ddd", amount: 10, category: "Utilities" },
   ]);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   // ------------------------------------------------------ RENDER FUNCTIONS ------------------------------------------------------
   const renderAlert = () => {
@@ -103,6 +106,10 @@ function App() {
       })
     );
   };
+
+  const visibleExpenses = selectedCategory
+    ? expenses.filter((e) => e.category === selectedCategory)
+    : expenses;
   // ------------------------------------------------------ JSX ------------------------------------------------------
   return (
     <>
@@ -168,10 +175,17 @@ function App() {
       <br></br>
       <br></br>
       {expenses.length !== 0 && (
-        <ExpenseList
-          expenses={expenses}
-          onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
-        />
+        <div>
+          <div className="mb-3">
+            <ExpenseFilter
+              onSelectCategory={(category) => setSelectedCategory(category)}
+            />
+          </div>
+          <ExpenseList
+            expenses={visibleExpenses}
+            onDelete={(id) => setExpenses(expenses.filter((e) => e.id !== id))}
+          />
+        </div>
       )}
     </>
   );
